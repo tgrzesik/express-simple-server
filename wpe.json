@@ -1,0 +1,17 @@
+{
+  "name": "hello-world",
+  "repo": "webkrak/express-simple-server",
+  "environments": [
+    {
+      "name": "development",
+      "branch": "main",
+      "wp_environment_name": "kongloheaddev",
+      "secrets": [
+        {
+          "key": "MY_SECRET",
+          "value": "Happy Halloween!!!"
+        }
+      ]
+    }
+  ]
+}
