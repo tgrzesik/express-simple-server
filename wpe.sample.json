@@ -6,7 +6,7 @@
       "name": "development",
       "branch": "main",
       "wp_environment_name": "kongloheaddev",
-      "env_vars": [
+      "env_variables": [
         {
           "key": "GRAPHQL_API_URL",
           "value": "https://dynahead.wpengine.com/graphql"
