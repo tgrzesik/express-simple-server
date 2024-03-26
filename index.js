@@ -33,6 +33,17 @@ app.prepare().then(() => {
     res.status(200).json({ message: 'Timeout 120' });
   });
 
+  server.get('/', (req, res) => {
+    const links = [
+      { url: '/wait10', description: '10 seconds' },
+      { url: '/wait20', description: '20 seconds' },
+      { url: '/wait30', description: '30 seconds' },
+      { url: '/wait90', description: '90 seconds' }
+    ];
+    const body = links.map(link => `<a href="${link.url}">${link.description}</a>`).join('<br>');
+    res.status(200).send(body);
+  });
+
   server.all('*', (req, res) => {
     return handle(req, res);
   });
