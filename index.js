@@ -1,27 +1,44 @@
 const express = require('express');
-const expressWs = require('express-ws');
+const next = require('next');
 
-const app = express();
-const wsInstance = expressWs(app);
+const dev = process.env.NODE_ENV !== 'production';
+const app = next({ dev });
+const handle = app.getRequestHandler();
 
-app.ws('/ws', (ws, req) => {
-  let start = Date.now();
+app.prepare().then(() => {
+  const server = express();
 
-  const interval = setInterval(() => {
-    const elapsed = Math.floor((Date.now() - start) / 1000);
-    ws.send(JSON.stringify({ seconds: elapsed }));
-  }, 1000);
+  server.get('/wait10', async (req, res) => {
+    await new Promise(resolve => setTimeout(resolve, 10000));
+    res.status(200).json({ message: 'Timeout 10' });
+  });
 
-  setTimeout(() => {
-    clearInterval(interval);
-    ws.close();
-  }, 90000); // Zamykamy połączenie po 90 sekundach
-});
+  server.get('/wait20', async (req, res) => {
+    await new Promise(resolve => setTimeout(resolve, 20000));
+    res.status(200).json({ message: 'Timeout 20' });
+  });
 
-app.get('/', (req, res) => {
-  res.send('Hello World!');
-});
+  server.get('/wait30', async (req, res) => {
+    await new Promise(resolve => setTimeout(resolve, 30000));
+    res.status(200).json({ message: 'Timeout 30' });
+  });
 
-app.listen(8080, () => {
-  console.log('Server is running on http://localhost:8080');
+  server.get('/wait90', async (req, res) => {
+    await new Promise(resolve => setTimeout(resolve, 90000));
+    res.status(200).json({ message: 'Timeout 90' });
+  });
+
+  server.get('/wait120', async (req, res) => {
+    await new Promise(resolve => setTimeout(resolve, 120000));
+    res.status(200).json({ message: 'Timeout 120' });
+  });
+
+  server.all('*', (req, res) => {
+    return handle(req, res);
+  });
+
+  const PORT = process.env.PORT || 8080;
+  server.listen(PORT, () => {
+    console.log(`Server started on port ${PORT}`);
+  });
 });
