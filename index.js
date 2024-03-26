@@ -1,47 +1,27 @@
-const axios = require('axios');
 const express = require('express');
-const server = express();
-const PORT = process.env.PORT || 3300;
+const expressWs = require('express-ws');
 
-server.use(express.static('public'));
+const app = express();
+const wsInstance = expressWs(app);
 
-server.get('/', (_req, res) => {
-  res.send('Hello Express!');
+app.ws('/ws', (ws, req) => {
+  let start = Date.now();
+
+  const interval = setInterval(() => {
+    const elapsed = Math.floor((Date.now() - start) / 1000);
+    ws.send(JSON.stringify({ seconds: elapsed }));
+  }, 1000);
+
+  setTimeout(() => {
+    clearInterval(interval);
+    ws.close();
+  }, 90000); // Zamykamy połączenie po 90 sekundach
 });
 
-server.get('/fetch-wordpress-graphql', async (_req, res) => {
-  const query = `
-    query QueryPosts {
-      posts {
-        nodes {
-          id
-          content
-          title
-          slug
-          featuredImage {
-            node {
-              mediaDetails {
-                sizes {
-                  sourceUrl
-                  name
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  `;
-
-  const response = await axios.post(process.env.GRAPHQL_API_URL, { query });
-  res.send(response.data.data.posts.nodes);
+app.get('/', (req, res) => {
+  res.send('Hello World!');
 });
 
-server.get('/envs', (req, res) => {
-  console.log(process.env);
-  res.send('Envs displayed in logs!');
-});
-
-server.listen(PORT, () => {
-  console.log(`Application is listening at port ${PORT}`);
+app.listen(8080, () => {
+  console.log('Server is running on http://localhost:8080');
 });

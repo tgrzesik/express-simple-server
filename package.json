@@ -1,16 +1,13 @@
 {
-  "name": "express-simple-server",
+  "name": "express-ws-example",
   "version": "1.0.0",
-  "description": "Simple Express Server",
+  "description": "A simple Express application with WebSocket support",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "wpe-build": "node build.js"
+    "start": "node index.js"
   },
-  "author": "Konrad Glowacki <konrad.glowacki@wpengine.com> (wpengine.com)",
-  "license": "ISC",
   "dependencies": {
-    "axios": "^0.21.1",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "express-ws": "^4.0.0"
   }
 }
