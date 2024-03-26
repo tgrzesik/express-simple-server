@@ -4,7 +4,9 @@
   "description": "A simple Express application with WebSocket support",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "wpe-build": "npm install",
+    "build": "npm install"
   },
   "dependencies": {
     "express": "^4.17.1",
