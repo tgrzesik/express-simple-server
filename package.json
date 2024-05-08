@@ -4,8 +4,8 @@
   "description": "Simple Express Server",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "wpe-build": "node build.js"
+    "start": "node --max-http-header-size=32000 index.js",
+    "wpe-build": "node --max-http-header-size=32000 build.js"
   },
   "author": "Konrad Glowacki <konrad.glowacki@wpengine.com> (wpengine.com)",
   "license": "ISC",
